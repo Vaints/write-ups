@@ -64,9 +64,9 @@ Based by the provided code, the program will ask the user to input a data using 
     
 We can exploit this Buffer Overflow vulnerability to overwrite the global variable `buff2` with 5134160 by filling the global variable `buff` first with 20 bytes of dummy data (the variable `buff` can only hold up to 20 bytes of data `char buf[20]`).
     
-Here's the exploit to solve this challenge.
+Here's my exploit to solve this challenge.
     
-<details close> <summary>exploit.py</summary>
+<details open> <summary>exploit.py</summary>
 
 ```python
 #!/usr/bin/env python3
@@ -140,7 +140,8 @@ if __name__ == "__main__":
 ``` 
 </details>
 
-![](https://hackmd.io/_uploads/ByrlzR3ZT.png)
+![PWN3D](images/614ea1a435ef3dde4c85a85530739c24333cc63f2e7df445bff0b5d867211bf4.png)  
+
 
     
 **Flag:** TCP1P{ez_buff3r_0verflow_l0c4l_v4r1abl3_38763f0c86da16fe14e062cd054d71ca}
