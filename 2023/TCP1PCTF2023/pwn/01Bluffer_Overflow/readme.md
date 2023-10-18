@@ -13,7 +13,7 @@ We were given a zip file that contain a C source code.
 
 <details open><summary>chall.c</summary>
     
-```c=
+```c
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -68,7 +68,7 @@ Here's the exploit to solve this challenge.
     
 <details close> <summary>exploit.py</summary>
 
-```python=
+```python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from pwn import *
