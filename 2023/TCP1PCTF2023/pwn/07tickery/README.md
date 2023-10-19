@@ -13,7 +13,7 @@ We were given an ELF binary and a LIBC file. Here's some information about the b
 
 ![ELF Information](images/f07c7c239b5bbca6e73b8c03587563a7ce8bafaabfdf079537c86868db878bbb.png)  
 
-Because I couldn't execute the provided libc, I decided to extract a few addresses from it and then used the [libc.rip](https://libc.rip) website to determine the libc version that was in use.
+Because I couldn't execute the provided libc, I decided to get a few addresses from it and then used the [libc.rip](https://libc.rip) website to determine the libc version that was in use.
 
 ![Geting some information about the libc](images/647369b5614f9909708d36939e2e8f6f1472d91a4118736afce16b45d3458419.png)  
 
@@ -268,6 +268,10 @@ def edit(idx, name=b"A\x00", data=b"\x00", write_data=True):
 
 def obf(pos, ptr):
     return (pos >> 12) ^ ptr
+
+... SNIPPED ...
+    cdll = CDLL("/lib/x86_64-linux-gnu/libc.so.6")
+    rand_list = [cdll.rand() for _ in range(1000)]
 ```
 </details>
 <br>
