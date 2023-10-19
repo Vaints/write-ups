@@ -4,11 +4,11 @@ My writeup for the challenge that I solved during (or after) the competition at 
 | Category | Challenge |
 | --- | --- |
 | PWN | [Bluffer Overflow](pwn/01Bluffer_Overflow) 🩸
-| PWN | [Game Changer](/pwn/02Game_Changer) 🩸
-| PWN | [💀](/pwn/03Skull) 🩸
-| PWN | [message](/pwn/04message)
-| PWN | [Nakiri Ayame](/pwn/05Nakiri_Ayame) 🩸
-| PWN | [babyheap](/pwn/06BabyHeap)
-| PWN | [tickery](/pwn/07tickery)
-| PWN | [unsafe safe](/pwn/08unsafe_safe)
-| PWN | [digital circuit](/pwn/digital_circuit)
+| PWN | [Game Changer](pwn/02Game_Changer) 🩸
+| PWN | [💀](pwn/03Skull) 🩸
+| PWN | [message](pwn/04message)
+| PWN | [Nakiri Ayame](pwn/05Nakiri_Ayame) 🩸
+| PWN | [babyheap](pwn/06BabyHeap)
+| PWN | [tickery](pwn/07tickery)
+| PWN | [unsafe safe](pwn/08unsafe_safe)
+| PWN | [digital circuit](pwn/digital_circuit)
