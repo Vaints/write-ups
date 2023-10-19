@@ -3,7 +3,7 @@ My writeup for the challenge that I solved during (or after) the competition at 
 
 | Category | Challenge |
 | --- | --- |
-| PWN | [Bluffer Overflow](/pwn/01Bluffer_Overflow) 🩸
+| PWN | [Bluffer Overflow](pwn/01Bluffer_Overflow) 🩸
 | PWN | [Game Changer](/pwn/02Game_Changer) 🩸
 | PWN | [💀](/pwn/03Skull) 🩸
 | PWN | [message](/pwn/04message)
