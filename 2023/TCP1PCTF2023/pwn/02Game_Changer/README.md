@@ -1,11 +1,11 @@
 ## Game Changer 🩸
 
 ```
-Author: rennfurukawa
+Author: itoid
 
-Maybe it's your first time pwning? Can you overwrite the variable?
+Are you a Game Changer?
 
-nc ctf.tcp1p.com 17027
+nc ctf.tcp1p.com 9254
 ```
 **Attachment**: [gamechanger](release/gamechanger)
 

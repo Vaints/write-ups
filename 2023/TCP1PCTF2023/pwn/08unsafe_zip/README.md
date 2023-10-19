@@ -11,7 +11,7 @@ nc ctf.tcp1p.com 1477
 
 We were given a zip file that contain an ELF binary, the source code, and some library file (including the interpreter). 
 
-Here's some information about the binary.
+Here's some information about the binary:
 
 ![ELF Information](images/b35b1fb1832507e45563945737ef7a5b9ebbc4aee5b58170f6a1e550e72310e6.png)  
 
@@ -75,6 +75,7 @@ int main() {
 </details>
 
 Information about the LIBC:
+
 ![LIBC Information](images/342e2a676076e552edce951d049dbf64fa1ebb3da405ea8fa5cad2ae2ebb0105.png)  
 
 The program will call the `login()` function and will ask the user to to input data, including age, the name of a pet, and a password. There's a validation mechanism using `rand()` function to check the input. The randomization seed is also set in this function using the current time as an integer, so we can implement the same in our solver to bypass the validation.
@@ -82,13 +83,18 @@ The program will call the `login()` function and will ask the user to to input d
 Now, let's take a look at the `deposit()` function. The program will ask the user to input two datas, including a safe number that responsible where the data will be stored at (index based) and the amount or a value that the user want to stored. Because there is no boundaries check on user input for the index of `safes` varaible, it caused an Out Of Bound (OOB) vulnerability that can be exploited to overwrite a value by adding it with the desired value (the user's second input in the `deposit()` function).
 
 The idea I used is to write the string "sh" at index 0 of the global variable `safes`. 
+
 ![Write "sh"](images/c6169f592adb8b023e1343f43b4d9740a3780edade867f6925522552b244cf3e.png)  
 
 Then, overwrite the pointer to the string in the global variable `exit_message` at index 100, so it points to the address where "sh" is stored in `safes[0]`. 
+
 ![Overwrite strings pointer in exit_message](images/5401f703b841ff84c301134bc9bb20b0ff58a3bc71e9662e2cd45ff229e2238d.png)  
 
 Afterward, overwrite the Global Offset Table (GOT) entry for the `puts()` function with the address of the system function. This way, when the program calls `puts(exit_message)` in the `main()` function, it will inadvertently call the `system()` function with "sh" as it arguments, then shell will be spawned.
+
 ![Overwrite puts GOT](images/12126ad77c170ea59ec5a1a9386c4eedc357d48cc06e0b7bee1d5b6a7a044821.png)  
+
+Here's my exploit to solve this challenge.
 
 <details open> <summary>exploit.py</summary>
 

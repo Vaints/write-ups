@@ -7,7 +7,7 @@ What do you want to say to me?
 
 nc ctf.tcp1p.com 8008
 ```
-**Attachment**: [dist.zip](release/chall)
+**Attachment**: [chall](release/chall)
 
 We were given an ELF binary. Here's some information about this binary.
 ![File Information 1](images/ea4d22be18868a475768cf2fccc93741448d368e73d27032080d2a6e270bd5f5.png)  
@@ -65,7 +65,7 @@ int __cdecl main(int argc, const char **argv, const char **envp)
     
 </details>
 
-Based by the decompiled program, first the program will set the buffer of stdin, stdout and stderr to non buffer. Then it will call the `seccomp_setup()` function that apply a seccomp rules. To understand what does the seccomp do, we can use (seccomp-tools)[https://github.com/david942j/seccomp-tools ] to assist us to understand the seccomp rules that being applied. Here's the output of seccomp-tools.
+Based by the decompiled program, first the program will set the buffer of stdin, stdout and stderr to non buffer. Then it will call the `seccomp_setup()` function that apply a seccomp rules. To understand what does the seccomp do, we can use [seccomp-tools](https://github.com/david942j/seccomp-tools) to assist us to understand the seccomp rules that being applied. Here's the output of seccomp-tools.
 ![Seccomp Tools Output](images/64045df7fbbc121cd058becb46de70bfdf4a20b679b0db0dbf3a60ebfac42ea7.png)  
 
 Now it's clear, the seccomp only allow 4 syscalls (read, write, open, getdents64). After applying the seccomp, the program will read the user input and save it into a heap. Then it will copy the user input into a rwx memory area that allocated by mmap. Then it will run the user input at the rwx address.
@@ -83,7 +83,7 @@ p += asm(f"""
 
 ![Leaked Flag Filename](images/70060cfa75aa351aaf425d7f8a37bcf2d1a056598538285d9251c82d614e9474.png)  
 
-After that, we just need to read the file `flag-3462d...e90.txt` using the ORW (Open Read Write) shellcode to obtain the flag.
+After that, we just need to read the file `flag-3462d01f8e1bcc0d8318c4ec420dd482a82bd8b650d1e43bfc4671cf9856ee90.txt` using the ORW (Open Read Write) shellcode to obtain the flag.
 
 Here's my exploit to solve this challenge.
     

