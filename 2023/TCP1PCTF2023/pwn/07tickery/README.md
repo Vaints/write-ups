@@ -10,16 +10,16 @@ nc ctf.tcp1p.com 49999
 **Attachment**: [main](release/main), [libc.so.6](release/libc.so.6)
 
 We were given an ELF binary and a LIBC file. Here's some information about the binary.
-![ELF Information](images/65d1e574702cd2a0b817fd7fe4f96e54442d27f296b177d705a78ff22d0e5da0.png)  
+
+![ELF Information](images/f07c7c239b5bbca6e73b8c03587563a7ce8bafaabfdf079537c86868db878bbb.png)  
 
 Because I couldn't execute the provided libc, I decided to extract a few addresses from it and then used the [libc.rip](https://libc.rip) website to determine the libc version that was in use.
 
-
-![Geting some information about the libc](images/dc0a3dafa4c9a89afc00560a44365021827aa41261a9438eed641f0af88e217d.png)  
+![Geting some information about the libc](images/647369b5614f9909708d36939e2e8f6f1472d91a4118736afce16b45d3458419.png)  
 
 Copy the last 3 nibbles of each address and it symbols names into the website.
 
-![libc.rip Output](images/cbe4390a21473c53e93c2534f2bbb7e4b0801e946f14aff137c83f55661c473a.png)  
+![libc.rip Output](images/b692253355520ba93b667450c6154876aed6697c5035c396c2a81353a310ecae.png)  
 
 Based on the image above, it is known that the libc provided in the challenge is version 2.37. Since you didn't have an interpreter for that libc version, you created a Docker image based on Ubuntu version 23.04.
 
@@ -30,13 +30,14 @@ from ubuntu:23.04
 ```
 </details>
 
+Follow this command to build the image and container. After that, copy the interpreter file from the docker container.
 ```bash
 docker build -t ubuntu_2304 .
 docker run --name ubuntu_2304 ubuntu_2304
 docker cp ubuntu_2304:/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 .
 ```
 
-After that, I patched the binary I was working with using patchelf. The purpose of this was to ensure that when the binary is executed, it uses the provided libc.
+After that, I patched the binary using patchelf. The purpose of this was to ensure that when the binary is executed, it uses the provided libc.
 
 ```bash
 patchelf --replace-needed libc.so.6 ./libc.so.6 main
