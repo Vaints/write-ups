@@ -19,6 +19,7 @@ I will assume you already have a basic understanding of kernel exploitation. If 
 Let's take a look at the provided run\.sh file.
 <details open><summary>run.sh</summary>
 
+
 ```bash
 #!/bin/sh
 /usr/bin/qemu-system-x86_64 \
@@ -32,6 +33,8 @@ Let's take a look at the provided run\.sh file.
 	-append "console=ttyS0 quiet kaslr panic=1 kpti=1 oops=panic" \
 ```
 </details>
+
+Based by the code above, there's some mitigation in this challenge such as SMEP, SMAP, KPTI and KASLR.
 
 Now, let's extract the initramfs.cpio.gz file using the following script:
 
@@ -49,8 +52,10 @@ rm initramfs.cpio
 
 ![Decompressed Initramfs](images/3d0333c7a6bbede1ce0dcea2cef0bbbcce284ca2c30c4234e56bf7fa6281cf2f.png)  
 
-Let's find where the kernel object file are located. The kernel object was located at /lib/modules/6.1.56/cook.ko.
+Let's find where the kernel object file are located. 
+
 ![picture 2](images/1c245f9099ac82bcb662061671a26ba63d9eb6be24b096d3978d3f79af9b8243.png)  
+The kernel object was located at `/lib/modules/6.1.56/cook.ko`.
 
 Below is the decompiled kernel object provided (I only highlight the important part).
 <details open><summary>Decompiled Kernel Object (cook.ko)</summary>
@@ -153,6 +158,7 @@ void __fastcall gyattt_ioctl(__int64 a1, int a2, __int64 a3)
   ...
 }
 ```
+This menu copies data from user space to kernel space using the `copy_from_user()` function. The data from user space comes from the 3rd argument of the ioctl call and is stored in the local variable `dest`, which has a size of 16 bytes. If the copying is successful, this menu copies data from kernel space to user space, specifically 8 bytes using `copy_to_user(a3, src, 8)`. Note that the result of the initial `copy_from_user` operation at the beginning of the menu is used to set the value that is stored in the `src` variable used in the `copy_to_user` call.
 
 <br>
 
