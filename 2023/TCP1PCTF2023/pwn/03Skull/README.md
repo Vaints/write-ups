@@ -196,6 +196,7 @@ This menu copies data from user space to kernel space using the `copy_from_user(
 We can assume that:
 - Flag request 0x6969: used for reading data at an address for 8 bytes.
 - Flag request 0xFADE: used for writing 8 bytes of data to an address.
+
 Which means we can perform Arbitrary Address Read & Write (AAR & AAW).
 
 But what do we need to write??? Also, it's worth noting that KASLR (Kernel Address Space Layout Randomization) is enabled in this challenge, which means the kernel addresses are randomized, making exploitation more challenging.
